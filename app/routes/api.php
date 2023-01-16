@@ -1,6 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Redemption\LuckyDrawController;
+use App\Http\Controllers\Redemption\RedemptionController;
+use App\Http\Controllers\UserAuthenticateController;
+use App\Http\Controllers\UserRegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function (){
+    Route::post(  '/lucky-drawing', [LuckyDrawController::class, 'drawing']);
+    Route::post(  '/coupon/{coupon_uuid}/redeem', [RedemptionController::class, 'redeem']);
 });
+
+Route::post('/auth',  [UserAuthenticateController::class, 'login']);
+Route::post('/register',  [UserRegisterController::class, 'register']);

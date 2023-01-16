@@ -5,6 +5,8 @@ $finder = (new PhpCsFixer\Finder())
     ->exclude([
         'var',
         'vendor',
+        'cache',
+        'storage',
         'public',
     ])
     ->name('*.php')
