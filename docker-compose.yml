@@ -12,6 +12,8 @@ services:
         - APP_CODE_PATH_CONTAINER=${APP_CODE_PATH_CONTAINER}
     volumes:
       - ./app:/var/www/app
+    depends_on:
+      - php
     networks:
       - backpack
     ports:
@@ -24,7 +26,8 @@ services:
       args:
         - APP_CODE_PATH_CONTAINER=${APP_CODE_PATH_CONTAINER}
         - INSTALL_XDEBUG=${INSTALL_XDEBUG:-false}
-
+    depends_on:
+      - db
     volumes:
       - ./app:/var/www/app
     ports:
@@ -33,14 +36,15 @@ services:
       - backpack
 
   db:
-    image: mysql:8.0-debian
+    image: mysql:8.0-oracle
     environment:
       MYSQL_USER: ${MYSQL_USER:-admin}
-      MYSQL_DATABASE: redemption
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-password}
     volumes:
-      - db:/var/lib/mysql/
+      - ./docker/db/create_db.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./docker/db/create_test_db.sql:/docker-entrypoint-initdb.d/2.sql
+      - ./mysql_data:/var/lib/mysql
     ports:
       - ${DB_HOST_PORT:-3306}:3306
     networks:
@@ -50,6 +54,3 @@ services:
 networks:
   backpack:
     driver: bridge
-
-volumes:
-  db:

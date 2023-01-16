@@ -5,13 +5,17 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.1.2",
+        "backpack/crud": "^5.4",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
-        "laravel/tinker": "^2.7"
+        "laravel/tinker": "^2.7",
+        "spatie/laravel-translatable": "^6.3"
     },
     "require-dev": {
+        "backpack/generators": "^3.3",
+        "barryvdh/laravel-ide-helper": "^2.12",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.13",
         "laravel/pint": "^1.0",
@@ -48,7 +52,7 @@
             "@php artisan key:generate --ansi"
         ],
         "php-fixer": [
-            "XDEBUG_MODE=off ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer  --config=.php-cs-fixer.dist.php -v --show-progress=dots --using-cache=no --diff --allow-risky=yes fix app"
+            "XDEBUG_MODE=off ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer  --config=.php-cs-fixer.dist.php -v --show-progress=dots --using-cache=no --diff --allow-risky=yes fix ."
         ]
     },
     "extra": {
