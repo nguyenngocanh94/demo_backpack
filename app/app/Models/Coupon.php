@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\UuidAsKey;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -31,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Coupon extends Model
 {
+    use HasFactory;
     use CrudTrait;
     use UuidAsKey;
     use HasTranslations;
