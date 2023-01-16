@@ -22,5 +22,9 @@ class DatabaseSeeder extends Seeder
         $coupon->quota = 100;
         $coupon->uuid = Uuid::fromString('de811ec4-0e2c-48e5-9c25-29c2f2a806ad');
         $coupon->save();
+
+        Coupon::factory()
+            ->count(50)
+            ->create();
     }
 }
