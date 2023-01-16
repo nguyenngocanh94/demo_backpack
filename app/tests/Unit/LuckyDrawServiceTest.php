@@ -23,35 +23,30 @@ class LuckyDrawServiceTest extends TestCase
     {
         return [
             [
-                Carbon::now('UTC')->timestamp,
-                function(){
-                    $this->expectException(ExceedDrawingException::class);
-                },
+                Carbon::now('UTC')->sub('2', 'days')->timestamp,
+                false,
                 100
             ],
             [
-                Carbon::now('UTC')->sub('2', 'days')->timestamp,
-                function(){
-
-                },
+                Carbon::now('UTC')->timestamp,
+                true,
                 100
-            ]
+            ],
         ];
     }
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
 
     /**
      * @dataProvider provide
      * @return void
+     * @throws \Throwable
      */
-    public function testGainPoint($timeGain, $preAssert, $pointSet){
+    public function testGainPoint($timeGain, $preAssertException, $pointSet){
         list($userMock, $distribute) = $this->prepareScenario($timeGain, $pointSet);
         $service = new LuckyDrawService($distribute, new PointGain());
-        $preAssert();
+        if ($preAssertException) {
+            $this->expectException(ExceedDrawingException::class);
+        }
         $pointGain = $service->gainPoint($userMock);
         $this->assertTrue($pointGain->point === $pointSet);
         $this->assertTrue($userMock->point === $pointSet);
@@ -60,20 +55,18 @@ class LuckyDrawServiceTest extends TestCase
 
     private function prepareScenario($timeGain, $pointSet): array
     {
-        $userUUid = \Str::uuid();
         $user = User::create([
-            'uuid' => $userUUid,
             'name' => 'test',
             'phone' => '1800',
-            'password' => 'ramdom'
+            'password' => 'ramdom',
+            'timezone' => 'UTC'
         ]);
 
-        $pointGain = new PointGain();
-        $pointGain->point = $pointSet;
-        $pointGain->user_uuid = $userUUid;
-        $pointGain->time = $timeGain;
-
-        $pointGain->save();
+        PointGain::create([
+            'user_uuid' => $user->uuid->toString(),
+            'point' => $pointSet,
+            'time' => $timeGain
+        ]);
 
         $distribution = $this->partialMock(PointDistribution::class, function (MockInterface $mock)use ($pointSet) {
             $mock->shouldReceive('getPoint')->andReturn($pointSet);

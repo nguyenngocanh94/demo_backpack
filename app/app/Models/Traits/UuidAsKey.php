@@ -4,6 +4,7 @@ namespace App\Models\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 trait UuidAsKey
 {
@@ -37,5 +38,13 @@ trait UuidAsKey
                 $model->setAttribute($model->getKeyName(), Str::uuid());
             }
         });
+    }
+
+    public function getUuid(){
+        if (is_string($this->uuid)){
+            return Uuid::fromString($this->uuid);
+        }
+
+        return $this->uuid;
     }
 }

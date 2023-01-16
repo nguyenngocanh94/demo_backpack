@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * App\Models\User
  *
- * @property string $uuid
+ * @property UuidInterface $uuid
  * @property string $name
  * @property string $phone
  * @property int $point

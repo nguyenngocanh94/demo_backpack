@@ -37,7 +37,7 @@ final class LuckyDrawService implements LuckyDrawInterface
             $pointGain = $user->pointGains()->create([
                 'point' => $point,
                 'time' => Carbon::now('UTC')->timestamp,
-                'user_uuid' => $user->uuid
+                'user_uuid' => $user->getUuid()->toString()
             ]);
             $user->increment('point', $point);
             DB::commit();
@@ -59,7 +59,7 @@ final class LuckyDrawService implements LuckyDrawInterface
 
         $query = $this->pointGainModel->newQuery();
         $query->where('time', '>=', $startOfDayTs)->where('time','<=', $endOfDayTs)
-        ->where('user_uuid', '=', $user->uuid);
+        ->where('user_uuid', '=', $user->getUuid()->toString());
         return $query->count('uuid') === 0;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Redemption;
 
 use App\Http\Controllers\Controller;
+use App\Models\Coupon;
 use App\Services\RedemptionInterface;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -20,7 +21,8 @@ class RedemptionController extends Controller
     public function redeem(string $couponUuid): JsonResponse
     {
         $user = $this->request->user();
-        $redemption = $this->redemption->redeemCoupon(Uuid::fromString($user->uuid), Uuid::fromString($couponUuid));
+        $coupon = Coupon::whereUuid($couponUuid)->first();
+        $redemption = $this->redemption->redeemCoupon($user, $coupon);
 
         return response()->json([
             'message' => 'success',

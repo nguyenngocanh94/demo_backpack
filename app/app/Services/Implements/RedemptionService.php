@@ -28,14 +28,7 @@ final class RedemptionService implements RedemptionInterface
                 throw new InvalidPointBalanceException('user do not have enough point or got exceed coupon quota');
             }
             $redemptionUuid = Str::uuid();
-            /** @var Redemption $redemption */
-            $redemption = $user->redemptions()->create([
-                'uuid' => $redemptionUuid->toString(),
-                'user_uuid' => $user->uuid,
-                'coupon_uuid' => $coupon->uuid,
-                'point' => $coupon->point,
-                'qrcode' => hash('md5', sprintf('%s_%s_%s', $redemptionUuid->toString(), $user->uuid, $coupon->uuid))
-            ]);
+            $redemption = Redemption::createFromFields($redemptionUuid, $user->getUuid(), $coupon->getUuid(), $coupon->point);
             $user->decrement('point', $coupon->point);
             $coupon->decrement('quota');
             DB::commit();

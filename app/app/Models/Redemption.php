@@ -48,4 +48,17 @@ class Redemption extends Model
     {
         return $this->belongsTo(Coupon::class);
     }
+
+    public static function createFromFields($uuid, $userUuid, $couponUuid, $point): Redemption
+    {
+        $redemption = new Redemption();
+        $redemption->uuid = $uuid;
+        $redemption->user_uuid = $userUuid;
+        $redemption->coupon_uuid = $couponUuid;
+        $redemption->point = $point;
+        $redemption->qrcode = sprintf('%s_%s_%s', $uuid, $userUuid, $couponUuid);
+        $redemption->save();
+
+        return $redemption;
+    }
 }

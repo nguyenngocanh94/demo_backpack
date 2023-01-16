@@ -33,7 +33,7 @@ services:
       - backpack
 
   db:
-    image: mysql:8.0-debian
+    image: mysql:8.0-oracle
     environment:
       MYSQL_USER: ${MYSQL_USER:-admin}
       MYSQL_DATABASE: redemption

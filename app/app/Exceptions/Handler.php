@@ -5,7 +5,10 @@ namespace App\Exceptions;
 use App\Exceptions\Definition\ExceedDrawingException;
 use App\Exceptions\Definition\InvalidPointBalanceException;
 use Carbon\Carbon;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -54,14 +57,14 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        $message = __('something wrong on server, try again!');
-        if ($e instanceof ExceedDrawingException){
-            $message = __('got max exceed daily lucky drawing');
-        }
-
-        if ($e instanceof InvalidPointBalanceException){
-            $message = __('insufficient balance');
-        }
+        $exceptionClass = get_class($e);
+        list($message, $httpCode) = match ($exceptionClass){
+            ExceedDrawingException::class => [__('got max exceed daily lucky drawing'), Response::HTTP_BAD_REQUEST],
+            InvalidPointBalanceException::class => [__('insufficient balance'), Response::HTTP_BAD_REQUEST],
+            ValidationException::class => [__($e->getMessage()), Response::HTTP_BAD_REQUEST],
+            AuthenticationException::class => [__($e->getMessage()), Response::HTTP_UNAUTHORIZED],
+            default => [__('server busy, try later'), Response::HTTP_BAD_REQUEST]
+        };
 
         $json = [
             'message' => 'fail',
@@ -71,6 +74,6 @@ class Handler extends ExceptionHandler
             'ts' => Carbon::now('UTC')->timestamp
         ];
 
-        return response()->json($json)->setStatusCode(Response::HTTP_BAD_REQUEST);
+        return response()->json($json)->setStatusCode($httpCode);
     }
 }
