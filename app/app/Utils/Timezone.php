@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Utils;
 
 class Timezone
@@ -14,12 +13,10 @@ class Timezone
 
     private static function getTzlist(): array
     {
-        $out = array();
+        $out = [];
         $tza = timezone_abbreviations_list();
-        foreach ($tza as $zone)
-        {
-            foreach ($zone as $item)
-            {
+        foreach ($tza as $zone) {
+            foreach ($zone as $item) {
                 $out[$item['timezone_id']] = 1;
             }
         }

@@ -31,7 +31,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Coupon extends Model
 {
-    use CrudTrait, UuidAsKey, HasTranslations;
+    use CrudTrait;
+    use UuidAsKey;
+    use HasTranslations;
 
     protected $table = 'coupons';
 

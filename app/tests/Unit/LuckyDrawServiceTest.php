@@ -8,11 +8,8 @@ use App\Models\User;
 use App\Services\Implements\LuckyDrawService;
 use App\Services\Implements\PointDistribution;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Mockery\Mock;
 use Mockery\MockInterface;
-use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
 class LuckyDrawServiceTest extends TestCase
@@ -25,12 +22,12 @@ class LuckyDrawServiceTest extends TestCase
             [
                 Carbon::now('UTC')->sub('2', 'days')->timestamp,
                 false,
-                100
+                100,
             ],
             [
                 Carbon::now('UTC')->timestamp,
                 true,
-                100
+                100,
             ],
         ];
     }
@@ -41,8 +38,9 @@ class LuckyDrawServiceTest extends TestCase
      * @return void
      * @throws \Throwable
      */
-    public function testGainPoint($timeGain, $preAssertException, $pointSet){
-        list($userMock, $distribute) = $this->prepareScenario($timeGain, $pointSet);
+    public function testGainPoint($timeGain, $preAssertException, $pointSet)
+    {
+        [$userMock, $distribute] = $this->prepareScenario($timeGain, $pointSet);
         $service = new LuckyDrawService($distribute, new PointGain());
         if ($preAssertException) {
             $this->expectException(ExceedDrawingException::class);
@@ -59,16 +57,16 @@ class LuckyDrawServiceTest extends TestCase
             'name' => 'test',
             'phone' => '1800',
             'password' => 'ramdom',
-            'timezone' => 'UTC'
+            'timezone' => 'UTC',
         ]);
 
         PointGain::create([
             'user_uuid' => $user->uuid->toString(),
             'point' => $pointSet,
-            'time' => $timeGain
+            'time' => $timeGain,
         ]);
 
-        $distribution = $this->partialMock(PointDistribution::class, function (MockInterface $mock)use ($pointSet) {
+        $distribution = $this->partialMock(PointDistribution::class, function (MockInterface $mock) use ($pointSet) {
             $mock->shouldReceive('getPoint')->andReturn($pointSet);
         });
 

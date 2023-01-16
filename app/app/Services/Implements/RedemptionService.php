@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Services\RedemptionInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Ramsey\Uuid\UuidInterface;
 use Str;
 use Throwable;
 
@@ -24,7 +23,7 @@ final class RedemptionService implements RedemptionInterface
         try {
             DB::beginTransaction();
 
-            if (false === $this->canAfford($user, $coupon)){
+            if (false === $this->canAfford($user, $coupon)) {
                 throw new InvalidPointBalanceException('user do not have enough point or got exceed coupon quota');
             }
             $redemptionUuid = Str::uuid();
@@ -34,7 +33,7 @@ final class RedemptionService implements RedemptionInterface
             DB::commit();
 
             return $redemption;
-        }catch (Throwable $exception){
+        } catch (Throwable $exception) {
             Log::error(sprintf('exception when redeem coupon: %s', $exception->getMessage()));
             DB::rollBack();
 

@@ -8,7 +8,6 @@ use Ramsey\Uuid\Uuid;
 
 trait UuidAsKey
 {
-
     /**
      * Get the value indicating whether the IDs are incrementing.
      *
@@ -34,14 +33,15 @@ trait UuidAsKey
         static::creating(function (Model $model) {
             $primaryKey = $model->getKeyName();
             $keyValue =  $model->{$primaryKey};
-            if ($keyValue === null){
+            if ($keyValue === null) {
                 $model->setAttribute($model->getKeyName(), Str::uuid());
             }
         });
     }
 
-    public function getUuid(){
-        if (is_string($this->uuid)){
+    public function getUuid()
+    {
+        if (is_string($this->uuid)) {
             return Uuid::fromString($this->uuid);
         }
 

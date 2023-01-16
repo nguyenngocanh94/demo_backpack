@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Tests\Feature;
 
 use App\Models\Coupon;
@@ -24,14 +23,14 @@ class RedemptionTest extends TestCase
             'name' => 'test',
             'phone' => '088',
             'password'=> '123456',
-            'password_confirmation' => '123456'
+            'password_confirmation' => '123456',
         ]);
 
         $response->assertStatus(200);
 
         $loginResponse = $this->postJson('api/auth', [
             'phone' => '088',
-            'password' => '123456'
+            'password' => '123456',
         ]);
         $loginResponse->assertStatus(Response::HTTP_OK);
         $this->token = 'Bearer '.$loginResponse['token'];
@@ -44,13 +43,14 @@ class RedemptionTest extends TestCase
             'name' => 'test',
             'description' => 'test',
             'quota' => 1,
-            'point' => 100
+            'point' => 100,
         ]);
     }
 
-    public function testNormalRedeem(){
+    public function testNormalRedeem()
+    {
         $response = $this->postJson(sprintf('api/coupon/%s/redeem', $this->coupon->getUuid()->toString()), [], [
-            'Authorization' => $this->token
+            'Authorization' => $this->token,
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -63,25 +63,28 @@ class RedemptionTest extends TestCase
         $this->assertTrue($currentCoupon->quota === 0);
     }
 
-    public function testRedeemOverQuota(){
+    public function testRedeemOverQuota()
+    {
         $this->testNormalRedeem();
         $response = $this->postJson(sprintf('api/coupon/%s/redeem', $this->coupon->getUuid()->toString()), [], [
-            'Authorization' => $this->token
+            'Authorization' => $this->token,
         ]);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
     }
 
-    public function testRedeemOverBalance(){
+    public function testRedeemOverBalance()
+    {
         $this->adjustBalance(50);
         $response = $this->postJson(sprintf('api/coupon/%s/redeem', $this->coupon->getUuid()->toString()), [], [
-            'Authorization' => $this->token
+            'Authorization' => $this->token,
         ]);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
     }
 
-    private function adjustBalance(int $point){
+    private function adjustBalance(int $point)
+    {
         User::wherePhone('088')->update(['point' => $point]);
     }
 }

@@ -4,5 +4,5 @@ namespace App\Services;
 
 interface PointDistributionInterface
 {
-    public function getPoint():int;
+    public function getPoint(): int;
 }

@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Services\LuckyDrawInterface;
 use App\Services\PointDistributionInterface;
 use Carbon\Carbon;
-use DateTimeZone;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -29,7 +28,7 @@ final class LuckyDrawService implements LuckyDrawInterface
     {
         try {
             DB::beginTransaction();
-            if (false === $this->canGain($user)){
+            if (false === $this->canGain($user)) {
                 throw new ExceedDrawingException('got the limit today');
             }
             $point = $this->distribution->getPoint();
@@ -37,13 +36,13 @@ final class LuckyDrawService implements LuckyDrawInterface
             $pointGain = $user->pointGains()->create([
                 'point' => $point,
                 'time' => Carbon::now('UTC')->timestamp,
-                'user_uuid' => $user->getUuid()->toString()
+                'user_uuid' => $user->getUuid()->toString(),
             ]);
             $user->increment('point', $point);
             DB::commit();
 
             return $pointGain;
-        }catch (Throwable $exception){
+        } catch (Throwable $exception) {
             Log::error(sprintf('exception when gain point on daily lucky drawing: %s', $exception->getMessage()));
             DB::rollBack();
             throw $exception;
@@ -58,7 +57,7 @@ final class LuckyDrawService implements LuckyDrawInterface
         $endOfDayTs = $now->endOfDay()->timestamp;
 
         $query = $this->pointGainModel->newQuery();
-        $query->where('time', '>=', $startOfDayTs)->where('time','<=', $endOfDayTs)
+        $query->where('time', '>=', $startOfDayTs)->where('time', '<=', $endOfDayTs)
         ->where('user_uuid', '=', $user->getUuid()->toString());
         return $query->count('uuid') === 0;
     }

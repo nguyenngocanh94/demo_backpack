@@ -15,16 +15,16 @@ class RedemptionServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton(PointDistributionInterface::class, function (){
+        $this->app->singleton(PointDistributionInterface::class, function () {
             return new PointDistribution(env('POINT_DISTRIBUTE_BY_BIAS')??'');
         });
 
-        $this->app->singleton(LuckyDrawInterface::class, function (){
+        $this->app->singleton(LuckyDrawInterface::class, function () {
             $pointDistribution = $this->app->make(PointDistributionInterface::class);
             return new LuckyDrawService($pointDistribution, new PointGain());
         });
 
-        $this->app->singleton(RedemptionInterface::class, function (){
+        $this->app->singleton(RedemptionInterface::class, function () {
             return new RedemptionService();
         });
     }

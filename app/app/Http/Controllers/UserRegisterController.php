@@ -20,9 +20,9 @@ class UserRegisterController extends RegisterController
         return response()->json([
             'message' => __('success'),
             'result' => [
-                'phone' => $user->phone
+                'phone' => $user->phone,
             ],
-            'ts' => Carbon::now('UTC')->timestamp
+            'ts' => Carbon::now('UTC')->timestamp,
         ])->setStatusCode(ResponseCode::HTTP_OK);
     }
 }

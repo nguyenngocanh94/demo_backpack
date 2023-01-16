@@ -28,7 +28,7 @@ class AuthenticateTest extends TestCase
             'name' => 'test',
             'phone' => '088',
             'password'=> '123456',
-            'password_confirmation' => '123456'
+            'password_confirmation' => '123456',
         ]);
 
         $response->assertStatus(200);
@@ -41,7 +41,7 @@ class AuthenticateTest extends TestCase
             'name' => 'test',
             'phone' => '088',
             'password'=> '123456',
-            'password_confirmation' => '123456'
+            'password_confirmation' => '123456',
         ]);
 
         $response->assertStatus(200);
@@ -51,24 +51,25 @@ class AuthenticateTest extends TestCase
             'name' => 'test',
             'phone' => '088',
             'password'=> '123456',
-            'password_confirmation' => '123456'
+            'password_confirmation' => '123456',
         ]);
         $response->assertStatus(400);
     }
 
-    public function testIssueToken(){
+    public function testIssueToken()
+    {
         $response = $this->postJson('api/register', [
             'name' => 'test',
             'phone' => '088',
             'password'=> '123456',
-            'password_confirmation' => '123456'
+            'password_confirmation' => '123456',
         ]);
 
         $response->assertStatus(200);
 
         $loginResponse = $this->postJson('api/auth', [
             'phone' => '088',
-            'password' => '123456'
+            'password' => '123456',
         ]);
         $loginResponse->assertStatus(Response::HTTP_OK);
         $this->assertTrue($loginResponse['token'] !== '');

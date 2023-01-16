@@ -68,7 +68,7 @@ class User extends Authenticatable
         'password',
         'is_admin',
         'timezone',
-        'point'
+        'point',
     ];
 
     /**

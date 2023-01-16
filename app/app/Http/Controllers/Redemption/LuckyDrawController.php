@@ -24,9 +24,9 @@ class LuckyDrawController extends Controller
             'message' => __('success'),
             'result' => [
                 'point' => $point->point,
-                'time' => $point->time
+                'time' => $point->time,
             ],
-            'ts' => Carbon::now('UTC')->timestamp
+            'ts' => Carbon::now('UTC')->timestamp,
         ])->setStatusCode(ResponseCode::HTTP_OK);
     }
 }

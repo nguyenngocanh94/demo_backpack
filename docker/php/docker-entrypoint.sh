@@ -11,7 +11,8 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php artisan' ]; then
     if [ ! -d "./vendor" ]; then
         composer install --prefer-dist --no-progress --no-suggest --no-interaction --optimize-autoloader
     fi
-    php artisan migrate
+    php artisan migrate && php artisan db:seed
+
 fi
 
 exec "$@"

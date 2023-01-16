@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -17,12 +16,12 @@ class UserController extends Controller
     public function updateTz(Request $request): Response|JsonResponse
     {
         $tz = $request->get('timezone');
-        if (!Timezone::verify($tz)){
+        if (!Timezone::verify($tz)) {
             return response()->json([
                 'message'=>__('fail'),
                 'result' => [
-                    'message' => 'wrong timezone'
-                ]
+                    'message' => 'wrong timezone',
+                ],
             ])->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
         User::whereUuid($request->user()->getUuid())->update(['timezone' => $tz]);
@@ -31,9 +30,9 @@ class UserController extends Controller
             'message' => __('success'),
             'result' => [
                 'phone' => $user->phone,
-                'timezone' => $user->timezone
+                'timezone' => $user->timezone,
             ],
-            'ts' => Carbon::now('UTC')->timestamp
+            'ts' => Carbon::now('UTC')->timestamp,
         ])->setStatusCode(Response::HTTP_OK);
     }
 }

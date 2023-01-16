@@ -355,5 +355,5 @@ return [
     |
     */
 
-    'token_username' => env('BACKPACK_TOKEN_USERNAME', false)
+    'token_username' => env('BACKPACK_TOKEN_USERNAME', false),
 ];

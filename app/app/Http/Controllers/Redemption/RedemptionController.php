@@ -8,8 +8,6 @@ use App\Services\RedemptionInterface;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response as ResponseCode;
 
 class RedemptionController extends Controller
@@ -27,9 +25,9 @@ class RedemptionController extends Controller
         return response()->json([
             'message' => 'success',
             'result' => [
-                'qrcode' => $redemption->qrcode
+                'qrcode' => $redemption->qrcode,
             ],
-            'ts' => Carbon::now('UTC')->timestamp
+            'ts' => Carbon::now('UTC')->timestamp,
         ])->setStatusCode(ResponseCode::HTTP_OK);
     }
 }

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Tests\Feature;
 
 use Carbon\Carbon;
@@ -12,7 +11,6 @@ use Tests\TestCase;
 
 class LuckyDrawingTest extends TestCase
 {
-
     use RefreshDatabase;
     private string $token;
     protected function setUp(): void
@@ -22,22 +20,23 @@ class LuckyDrawingTest extends TestCase
             'name' => 'test',
             'phone' => '088',
             'password'=> '123456',
-            'password_confirmation' => '123456'
+            'password_confirmation' => '123456',
         ]);
 
         $response->assertStatus(200);
 
         $loginResponse = $this->postJson('api/auth', [
             'phone' => '088',
-            'password' => '123456'
+            'password' => '123456',
         ]);
         $loginResponse->assertStatus(Response::HTTP_OK);
         $this->token = 'Bearer '.$loginResponse['token'];
     }
 
-    public function testNormalLuckyDrawing(){
+    public function testNormalLuckyDrawing()
+    {
         $response = $this->postJson('api/lucky-drawing', [], [
-            'Authorization' => $this->token
+            'Authorization' => $this->token,
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -45,9 +44,10 @@ class LuckyDrawingTest extends TestCase
         $this->assertTrue(Carbon::createFromTimestamp($response['result']['time'])->day === Carbon::now('UTC')->day);
     }
 
-    public function testTwiceLuckyDrawingInDay(){
+    public function testTwiceLuckyDrawingInDay()
+    {
         $response = $this->postJson('api/lucky-drawing', [], [
-            'Authorization' => $this->token
+            'Authorization' => $this->token,
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -56,7 +56,7 @@ class LuckyDrawingTest extends TestCase
 
         // try again.
         $secondTry = $this->postJson('api/lucky-drawing', [], [
-            'Authorization' => $this->token
+            'Authorization' => $this->token,
         ]);
         $secondTry->assertStatus(Response::HTTP_BAD_REQUEST);
     }

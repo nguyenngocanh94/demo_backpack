@@ -22,7 +22,7 @@ class UserAuthenticateController extends LoginController
         return response()
             ->json([
                 'phone' => $user->phone,
-                'token' => $user->createToken('redemption')->plainTextToken
+                'token' => $user->createToken('redemption')->plainTextToken,
             ])->setStatusCode(ResponseCode::HTTP_OK);
     }
 
@@ -30,7 +30,7 @@ class UserAuthenticateController extends LoginController
     {
         return response()
         ->json([
-            'messages' => [trans('auth.failed')]
+            'messages' => [trans('auth.failed')],
         ])->setStatusCode(ResponseCode::HTTP_UNAUTHORIZED);
     }
 }

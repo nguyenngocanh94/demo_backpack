@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function (){
-    Route::post(  '/lucky-drawing', [LuckyDrawController::class, 'drawing']);
-    Route::post(  '/coupon/{coupon_uuid}/redeem', [RedemptionController::class, 'redeem']);
-    Route::patch(  '/user/timezone', [UserController::class, 'updateTz']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/lucky-drawing', [LuckyDrawController::class, 'drawing']);
+    Route::post('/coupon/{coupon_uuid}/redeem', [RedemptionController::class, 'redeem']);
+    Route::patch('/user/timezone', [UserController::class, 'updateTz']);
 });
 
-Route::post('/auth',  [UserAuthenticateController::class, 'login']);
-Route::post('/register',  [UserRegisterController::class, 'register']);
+Route::post('/auth', [UserAuthenticateController::class, 'login']);
+Route::post('/register', [UserRegisterController::class, 'register']);

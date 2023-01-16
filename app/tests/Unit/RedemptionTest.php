@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Tests\Unit;
 
 use App\Exceptions\Definition\InvalidPointBalanceException;
@@ -16,14 +15,15 @@ class RedemptionTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function provide(){
+    private function provide()
+    {
         return [
             [
-                100,1,90,false
+                100,1,90,false,
             ],
             [
-                100,10,120,true
-            ]
+                100,10,120,true,
+            ],
         ];
     }
 
@@ -32,10 +32,11 @@ class RedemptionTest extends TestCase
      * @return void
      * @throws \Throwable
      */
-    public function testRedeemCoupon($userPoint, $quota, $couponPoint, $preAssert){
-        list($user, $coupon) = $this->prepareScenario($userPoint, $quota, $couponPoint);
+    public function testRedeemCoupon($userPoint, $quota, $couponPoint, $preAssert)
+    {
+        [$user, $coupon] = $this->prepareScenario($userPoint, $quota, $couponPoint);
         $redemptionSv = new RedemptionService();
-        if ($preAssert){
+        if ($preAssert) {
             $this->expectException(InvalidPointBalanceException::class);
         }
         $redemption = $redemptionSv->redeemCoupon($user, $coupon);
@@ -51,14 +52,14 @@ class RedemptionTest extends TestCase
             'point' => $userPoint,
             'name' => 'test',
             'password' => 'random',
-            'phone' => '192'
+            'phone' => '192',
         ]);
 
         $coupon = Coupon::create([
             'quota' => $quota,
             'point' => $couponPoint,
             'name' => 'test',
-            'description' => 'test'
+            'description' => 'test',
         ]);
 
         return [$user, $coupon];
